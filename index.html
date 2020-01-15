@@ -2,24 +2,203 @@
 <html>
 <head>
 	<title></title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link href="./style/index.css" rel="stylesheet">
 </head>
 <body>
 
-	<h1>My First Google Map</h1>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><strong>motum</strong></a>
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="#">Sign out</a>
+        </li>
+      </ul>
+    </nav>
 
-	<div id="googleMap" style="width:100%;height:400px;"></div>
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+
+                <a class="nav-link active" href="#">
+                  <span data-feather="home"></span>
+                  Dashboard <span class="sr-only">(current)</span>
+                </a>
+
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="file"></span>
+                  Settings
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="file"></span>
+                  Account
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="file"></span>
+                  Billing Info
+                </a>
+              </li>
+
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+<!-- 			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<div class="btn-group" role="group" aria-label="Basic example">
+					<button type="button" class="btn btn-secondary"><a href="#">DASHBOARD</a></button>
+					<button type="button" class="btn btn-secondary"><a href="##">MAP VIEW</a></button>
+				</div>
+			</div> -->
+
+			<div class="w3-container" style="margin-top: 20px">
+				<div style="display: flex; flex-direction: row; justify-content: space-between;">
+					<div class="w3-bar w3-black" style="margin-bottom: 20px">
+						<button class="w3-bar-item w3-button tablink w3-red" onclick="openCity(event,'London')">MAP VIEW </button>
+						<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'Paris')">DASHBOARD</button>
+					</div>	
+					<div class="dropdown" style="margin-right: 310px">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: none">
+							Find Phenomenon
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="#">Ebola</a>
+						<a class="dropdown-item" href="#">Zika</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="London" class="w3-container w3-border city">
+					<div class="card" style="width:840px;">
+					  <div class="card-body">
+					    <div id="googleMap" style="width:800px;height:480px;"></div>
+					  </div>
+					</div>
+				</div>
+
+				<div id="Paris" class="w3-container w3-border city" style="display:none">
+					<h2>Paris</h2>
+					<div class="card" style="width:840px;">
+					  <div class="card-body">
+					    <!-- <div id="googleMap" style="width:800px;height:480px;"></div> -->
+					    <h1>dashboard</h1>
+					  </div>
+					</div>
+				</div>
+			</div>
+        </main>
+      </div>
+    </div>s
+
+
 
 	<script>
+	var map;
+	var marker;
 	function myMap() {
-	var mapProp= {
-	  center:new google.maps.LatLng(51.508742,-0.120850),
-	  zoom:5,
-	};
-	var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+		// SET UP a location and a map
+		var myCenter = new google.maps.LatLng(51.508742, -0.120850);
+
+		var mapProp= {
+				center: myCenter,
+				zoom:2,
+				minZoom: 2
+			};
+
+		map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+		// SET UP a new marker
+		marker = new google.maps.Marker({
+			position:myCenter,
+			animation:google.maps.Animation.BOUNCE
+		});
+		marker.setMap(map);
+
+	    google.maps.event.addListener(map, 'click', function (event) {
+	        placeMarker(event.latLng);
+	        console.log("clicking");
+	    });
+
+		// Bounds
+		var strictBounds = new google.maps.LatLngBounds(
+			// new google.maps.LatLng(28.70, -127.50), 
+			// new google.maps.LatLng(48.85, -55.90)
+			new google.maps.LatLng(-90, -180), 
+			new google.maps.LatLng(90, 180)
+		);
+
+		// Listen for the dragend event
+		google.maps.event.addListener(map, 'drag', function() {
+
+			if (strictBounds.contains(map.getCenter())) return;
+
+			// We're out of bounds - Move the map back within the bounds
+			var c = map.getCenter();
+			var x = c.lng();
+			var y = c.lat();
+			var maxX = strictBounds.getNorthEast().lng();
+			var maxY = strictBounds.getNorthEast().lat();
+			var minX = strictBounds.getSouthWest().lng();
+			var minY = strictBounds.getSouthWest().lat();
+
+			if (x < minX) x = minX;
+			if (x > maxX) x = maxX;
+			if (y < minY) y = minY;
+			if (y > maxY) y = maxY;
+
+			map.setCenter(new google.maps.LatLng(y, x));
+			console.log("moving");
+		});
 	}
+	// SET UP a map marker
+	function placeMarker(location) {
+	    var marker = new google.maps.Marker({
+	        position: location,
+	        map: map
+	    });
+	}
+
+	function openCity(evt, cityName) {
+		var i, x, tablinks;
+		x = document.getElementsByClassName("city");
+		for (i = 0; i < x.length; i++) {
+			x[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablink");
+		for (i = 0; i < x.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+		}
+		document.getElementById(cityName).style.display = "block";
+		evt.currentTarget.className += " w3-red";
+	}
+
+
 	</script>
 
-	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=myMap"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTQklS7ZF97MxQyvLk33KjKMSLUB-po3o&callback=myMap"></script>
 
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+
+
