@@ -1,106 +1,151 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title></title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<link href="./style/index.css" rel="stylesheet">
-</head>
-<body>
+	<head>
+		<title></title>
+	    <!-- Required meta tags -->
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<link href="./style/index.css" rel="stylesheet">
+		<!-- font -->
+		<link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600&display=swap" rel="stylesheet">
+	</head>
 
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><strong>motum</strong></a>
-      <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-          <a class="nav-link" href="#">John Doe</a>
-        </li>
-      </ul>
+<body>
+    <nav id="navbar" class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    	<div style="width: 180px">
+    		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><strong>motum</strong></a>
+    	</div>
+		<ul class="navbar-nav px-3">
+		<li class="nav-item text-nowrap">
+			<a class="nav-link" href="#">John Doe</a>
+		</li>
+		</ul>
     </nav>
 
     <div class="container-fluid">
       <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-          <div class="sidebar-sticky">
-            <ul class="nav flex-column">
-              <li class="nav-item">
+        <nav  class="col-md-2 d-none d-md-block bg-light sidebar" style="width: 180px !important; ">
+        	<div>
+	          <div class="sidebar-sticky">
+	            <ul class="nav flex-column">
+	              <li class="nav-item">
+	                <a class="nav-link active" href="#">
+	                  <span data-feather="home"></span>
+	                  Home <span class="sr-only">(current)</span>
+	                </a>
+	              </li>
+	              <li class="nav-item">
+	                <a class="nav-link" href="#">
+	                  <span data-feather="file"></span>
+	                  Settings
+	                </a>
+	              </li>
 
-                <a class="nav-link active" href="#">
-                  <span data-feather="home"></span>
-                  Dashboard <span class="sr-only">(current)</span>
-                </a>
+	              <li class="nav-item">
+	                <a class="nav-link" href="#">
+	                  <span data-feather="file"></span>
+	                  Account
+	                </a>
+	              </li>
 
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file"></span>
-                  Settings
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file"></span>
-                  Account
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file"></span>
-                  Billing Info
-                </a>
-              </li>
-
-            </ul>
+	              <li class="nav-item">
+	                <a class="nav-link" href="#">
+	                  <span data-feather="file"></span>
+	                  Billing Info
+	                </a>
+	              </li>
+	            </ul>
+	          </div>
           </div>
+
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
         	<div style="display: flex;flex-direction: row;">
+
 				<div class="w3-container" style="margin-top: 20px; width: 900px">
 
+
 					<div id="topbox" style="display: flex; flex-direction: row; justify-content: space-between; width: 840px">
-						<div class="w3-bar w3-black" style="margin-bottom: 20px">
-							<button class="w3-bar-item w3-button tablink w3-red" onclick="openCity(event,'london')">MAP VIEW </button>
-							<button class="w3-bar-item w3-button tablink" onclick="openCity(event,'Paris')">DASHBOARD</button>
-						</div>	
+
+						<div class="tab">
+							<button class="tablinks active" onclick="openCity(event, 'London')">Map View</button>
+							<button class="tablinks" onclick="openCity(event, 'Paris')">Dashboard</button>
+						</div>
 					</div>
 
-					<div id="london" class="w3-container w3-border city">
-						<div class="card" style="width:840px;">
+					<div id="London" class="tabcontent" style="display: block;">
+						<div class="card" style="width:880px;">
 						  <div class="card-body">
-						    <div id="googleMap" style="width:800px;height:480px;"></div>
+						    <div id="googleMap" style="width:840px;height:480px;"></div>
 						  </div>
 						</div>
-					</div>
-					<div id="Paris" class="w3-container w3-border city" style="display:none">
-						<div class="card" style="width:840px;">
-						  	<div class="card-body">
-						    	<canvas id="bubbleChart"></canvas>
-						  	</div>
+					</div> <!-- london -->
+
+					<div id="Paris" class="tabcontent">
+						<div id="innerContainer" style="display: flex; flex-direction: row;justify-content: space-around;height: 500px">
+							
+							<div id="leftVertical">
+						        <div class="card" style="width: 400px; margin: 10px; box-shadow: 2px 2px 2px lightgray;">
+						            <div class="card-body">
+						                <h5 class="card-title" style="font-family:Quicksand">Mentions in the last Hour</h>
+						                <div>
+						                	<h1>12345</h1>
+						                	<h3 style="color: #3cc480">↑10%</h3>
+						                </div>
+						            </div>
+						        </div>
+						        <div class="card" style="width: 400px;margin: 10px; box-shadow: 2px 2px 2px lightgray;">
+						            <div class="card-body">
+						                <h5 class="card-title" style="font-family:Quicksand">Tweet Sentiments</h5>
+						                <div id="donutDiv">
+						                    <canvas id="donutChart2020"></canvas>
+						                </div>    
+						            </div>
+						        </div>
+							</div>
+							<div id="rightVertical" style="display: flex; flex-direction: column;">
+
+						        <div class="card" style="width: 520px; height: 290px; margin: 10px; box-shadow: 2px 2px 2px lightgray;">
+						            <div class="card-body">
+						                <h5 class="card-title" style="font-family:Quicksand">Related Topics</h5>
+						                <div id="bubbleDiv">
+						                    <canvas id="bubbleChart"></canvas>
+						                </div>   
+						            </div>
+						        </div>
+
+						        <div class="card" style="width: 520px; margin: 10px; box-shadow: 2px 2px 2px lightgray;">
+						            <div class="card-body">
+						                <h5 class="card-title" style="font-family:Quicksand">Tweets in the Last 7 days</h5>
+						                <div id="lineDiv" style="height: 220px; width:480px">
+						                    <canvas id="lineChart"></canvas>
+						                </div>
+						            </div>
+						        </div>
+							</div>
 						</div>
-					</div>
+					</div> <!-- paris -->
+
 				</div>
-				<div>
-					<div class="dropdown" style="margin-top: 70px;">
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: none">
-							Find Phenomenon
-						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="#">Ebola</a>
-						<a class="dropdown-item" href="#">Zika</a>
-						</div>
+				<div style="margin-left: 30px">
+
+					<div style="margin-top: 70px">
+						<label for="sel1">Find Phenomenon</label>
+						<select class="form-control" id="sel1">
+							<option>Ebola</option>
+							<option>Zika</option>
+						</select>
 					</div>
-					<form style="margin-top: 20px">
+
+					<form style="margin-top: 20px; width: 160px">
 						<div class="form-group">
 							<label for="exampleInputPassword1">check visualization until</label>
-							<input type="date" data-date-inline-picker="true" class="form-control" id="exampleInputPassword1" onchange="checkSpread(this.value)">
+							<input type="date" data-date-inline-picker="true" class="form-control form-control-sm" id="exampleInputPassword1" onchange="checkSpread(this.value)" value="2014-01-16">
 						</div>
-						<!-- <button value="submit" class="btn btn-primary"">Submit</button> -->
 					</form>
-					
 				</div>
 			</div>
         </main>
